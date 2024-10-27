@@ -1156,6 +1156,10 @@ input[type=number] {
     margin-top: 7rem;
   }
 
+  .lg\:mt-24 {
+    margin-top: 6rem;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -1198,6 +1202,18 @@ input[type=number] {
 
   .lg\:max-w-\[1440px\] {
     max-width: 1440px;
+  }
+
+  .lg\:max-w-\[1240px\] {
+    max-width: 1240px;
+  }
+
+  .lg\:max-w-\[1080px\] {
+    max-width: 1080px;
+  }
+
+  .lg\:max-w-\[1100px\] {
+    max-width: 1100px;
   }
 
   .lg\:-translate-x-1\/2 {
@@ -1295,9 +1311,19 @@ input[type=number] {
     padding-bottom: 2.5rem;
   }
 
+  .lg\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
   .lg\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
+  }
+
+  .lg\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 
   .lg\:text-Dark-grayish-blue {

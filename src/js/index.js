@@ -21,56 +21,63 @@ const mainImages = [
 ];
 // Tableau contenant les chemins des images principales
 
-const thumbnailImages = [
-    './src/images/image-product-1-thumbnail.jpg',
-    './src/images/image-product-2-thumbnail.jpg',
-    './src/images/image-product-3-thumbnail.jpg',
-    './src/images/image-product-4-thumbnail.jpg'
-];
-// Tableau contenant les chemins des images miniatures
 
+function preloadImages(imageArray) {
+    imageArray.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
+// Préchargement des images au démarrage de la page
+preloadImages(mainImages);
+
+
+// Fonction pour mettre à jour les bordures des miniatures
+function updateThumbnailBorders(activeIndex) {
+    thumbnailContainers.forEach((container, index) => {
+        if (index === activeIndex) {
+            container.classList.remove("border-2", "border-White");
+            container.classList.add("border-2", "border-Orange");
+            container.getElementsByTagName('div')[0].classList.remove("opacity-0");
+            container.getElementsByTagName('div')[0].classList.add("opacity-50");
+        } else {
+            container.classList.remove("border-2", "border-Orange");
+            container.classList.add("border-2", "border-White");
+            container.getElementsByTagName('div')[0].classList.add("opacity-0");
+            container.getElementsByTagName('div')[0].classList.remove("opacity-50");
+        }
+    });
+}
+
+// Modifier la fonction updateMainImage pour inclure la mise à jour des bordures
 function updateMainImage(index) {
-    // Fonction pour mettre à jour l'image principale
-    mainImageContainer.innerHTML = ''; // Vide le contenu du conteneur de l'image principale
-
-    const newImg = document.createElement('img'); // Crée un nouvel élément img
-    newImg.src = mainImages[index]; // Définit la source de l'image
-    newImg.alt = `Image principale ${index + 1}`; // Définit le texte alternatif
-
-    // Ajoute les classes CSS de base à l'image
+    mainImageContainer.innerHTML = '';
+    
+    const newImg = document.createElement('img');
+    newImg.src = mainImages[index];
+    newImg.alt = `Image principale ${index + 1}`;
+    
     newImg.classList.add('main-image', 'object-cover', 'w-full', 'h-[350px]');
-
-    // Vérifie la largeur de la fenêtre et ajoute des classes supplémentaires si elle est >= 1024px
+    
     if (window.innerWidth >= 1024) {
         newImg.classList.add('h-auto', 'rounded-xl', 'w-auto');
     }
-
-    mainImageContainer.appendChild(newImg); // Ajoute l'image au conteneur
-    currentIndex = index; // Met à jour l'index courant
+    
+    mainImageContainer.appendChild(newImg);
+    currentIndex = index;
+    
+    // Ajouter la mise à jour des bordures
+    updateThumbnailBorders(index);
 }
 
-// Initialisation des miniatures
+// Modifier l'initialisation des miniatures
 thumbnailContainers.forEach((container, index) => {
-    // Pour chaque conteneur de miniature
-
-    const picture = container.querySelector('picture'); // Sélectionne l'élément picture dans le conteneur
-    picture.innerHTML = ''; // Vide le contenu existant
-
-    const thumbnailImg = document.createElement('img'); // Crée un nouvel élément img pour la miniature
-    thumbnailImg.src = thumbnailImages[index]; // Définit la source de l'image miniature
-    thumbnailImg.alt = `Miniature ${index + 1}`; // Définit le texte alternatif
-
-    // Ajoute les classes de base pour la miniature
-    thumbnailImg.classList.add('thumbnail-image');
-
-    // Vérifie si la largeur de la fenêtre est d’au moins 1024 pixels et ajoute les classes conditionnelles
-    if (window.innerWidth >= 1024) {
-        thumbnailImg.classList.add('h-auto','w-auto', 'rounded-xl');
-    }
-
-    picture.appendChild(thumbnailImg); // Ajoute l'image miniature au conteneur picture
-    container.addEventListener('click', () => updateMainImage(index)); // Ajoute un écouteur d'événement pour le clic sur la miniature
+    container.addEventListener('click', () => updateMainImage(index));
 });
+
+// Initialisation au chargement
+updateMainImage(0);
 
 
 // Gestion des boutons de navigation

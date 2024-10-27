@@ -31,54 +31,47 @@ const thumbnailImages = [
 
 function updateMainImage(index) {
     // Fonction pour mettre à jour l'image principale
+    mainImageContainer.innerHTML = ''; // Vide le contenu du conteneur de l'image principale
 
-    mainImageContainer.innerHTML = '';
-    // Vide le contenu du conteneur de l'image principale
+    const newImg = document.createElement('img'); // Crée un nouvel élément img
+    newImg.src = mainImages[index]; // Définit la source de l'image
+    newImg.alt = `Image principale ${index + 1}`; // Définit le texte alternatif
 
-    const newImg = document.createElement('img');
-    // Crée un nouvel élément img
+    // Ajoute les classes CSS de base à l'image
+    newImg.classList.add('main-image', 'object-cover', 'w-full', 'h-[350px]');
 
-    newImg.src = mainImages[index];
-    // Définit la source de l'image à partir du tableau mainImages
+    // Vérifie la largeur de la fenêtre et ajoute des classes supplémentaires si elle est >= 1024px
+    if (window.innerWidth >= 1024) {
+        newImg.classList.add('h-auto', 'rounded-xl', 'w-auto');
+    }
 
-    newImg.alt = `Image principale ${index + 1}`;
-    // Définit le texte alternatif de l'image
-
-    newImg.classList.add('main-image', 'object-cover', 'w-full', 'h-[300px]');
-    // Ajoute les classes CSS nécessaires à l'image
-
-    mainImageContainer.appendChild(newImg);
-    // Ajoute l'image au conteneur
-
-    currentIndex = index;
-    // Met à jour l'index courant
+    mainImageContainer.appendChild(newImg); // Ajoute l'image au conteneur
+    currentIndex = index; // Met à jour l'index courant
 }
 
 // Initialisation des miniatures
 thumbnailContainers.forEach((container, index) => {
     // Pour chaque conteneur de miniature
 
-    const picture = container.querySelector('picture');
-    // Sélectionne l'élément picture dans le conteneur
+    const picture = container.querySelector('picture'); // Sélectionne l'élément picture dans le conteneur
+    picture.innerHTML = ''; // Vide le contenu existant
 
-    picture.innerHTML = '';
-    // Vide le contenu existant
+    const thumbnailImg = document.createElement('img'); // Crée un nouvel élément img pour la miniature
+    thumbnailImg.src = thumbnailImages[index]; // Définit la source de l'image miniature
+    thumbnailImg.alt = `Miniature ${index + 1}`; // Définit le texte alternatif
 
-    const thumbnailImg = document.createElement('img');
-    // Crée un nouvel élément img pour la miniature
+    // Ajoute les classes de base pour la miniature
+    thumbnailImg.classList.add('thumbnail-image');
 
-    thumbnailImg.src = thumbnailImages[index];
-    // Définit la source de l'image miniature
+    // Vérifie si la largeur de la fenêtre est d’au moins 1024 pixels et ajoute les classes conditionnelles
+    if (window.innerWidth >= 1024) {
+        thumbnailImg.classList.add('h-auto','w-auto', 'rounded-xl');
+    }
 
-    thumbnailImg.alt = `Miniature ${index + 1}`;
-    // Définit le texte alternatif
-
-    picture.appendChild(thumbnailImg);
-    // Ajoute l'image miniature au conteneur picture
-
-    container.addEventListener('click', () => updateMainImage(index));
-    // Ajoute un écouteur d'événement pour le clic sur la miniature
+    picture.appendChild(thumbnailImg); // Ajoute l'image miniature au conteneur picture
+    container.addEventListener('click', () => updateMainImage(index)); // Ajoute un écouteur d'événement pour le clic sur la miniature
 });
+
 
 // Gestion des boutons de navigation
 prevButton.addEventListener('click', () => {
@@ -110,3 +103,71 @@ document.addEventListener('keydown', (e) => {
 // Initialisation au chargement
 updateMainImage(0);
 // Affiche la première image au chargement de la page
+
+
+const cartDisplay = document.querySelector('.cart-expended')
+document.querySelector('.cart').addEventListener("click", function() {
+    cartDisplay.classList.toggle('hidden')
+})
+
+const menuDisplay = document.querySelector('.menu')
+const shadow = document.querySelector('.shadow')
+document.querySelector('.open-menu').addEventListener("click", function() {
+    menuDisplay.classList.toggle('hidden')
+    shadow.classList.toggle('hidden')
+})
+document.querySelector('.close-menu').addEventListener("click", function() {
+    menuDisplay.classList.toggle('hidden')
+    shadow.classList.toggle('hidden')
+})
+
+
+let itemToAdd = document.querySelector('.item-to-add');
+document.querySelector('.minus').addEventListener("click", function() {
+    let currentValue = parseInt(itemToAdd.value, 10) || 0;
+    if (currentValue > 0) { // pour éviter de descendre en-dessous de 0
+        itemToAdd.value = currentValue - 1;
+    }
+});
+
+document.querySelector('.plus').addEventListener("click", function() {
+    let currentValue = parseInt(itemToAdd.value, 10) || 0;
+    itemToAdd.value = currentValue + 1;
+});
+
+const popUpCart = document.querySelector('.popup-cart')
+const noItemInCart = document.querySelector(".no-item-to-cart")
+const itemAddedToCart = document.querySelector(".item-in-cart")
+const buttonAddToCart = document.querySelector('.add-to-cart')
+let currentValueStack = 0
+
+buttonAddToCart.addEventListener("click", () => {
+    let currentValue = parseInt(itemToAdd.value, 10) || 0;
+    currentValueStack += currentValue
+    
+
+    const sneakerPrice = 125
+    if (currentValue <= 0){
+
+    } else {
+        const numberOfItem = document.querySelector('.number-of-item')
+        numberOfItem.textContent = `${currentValueStack}`
+        const totalPriceLayout = document.querySelector('.total-price')
+        let totalPrice = sneakerPrice * currentValueStack
+        totalPriceLayout.textContent = `$${totalPrice}`
+        noItemInCart.classList.add("hidden")
+        itemAddedToCart.classList.remove("hidden")
+        popUpCart.classList.remove("hidden")
+        popUpCart.textContent = `${currentValueStack}`
+
+
+    }
+})
+
+const deleteItemInCart = document.querySelector('.delete')
+deleteItemInCart.addEventListener("click", () => {
+    noItemInCart.classList.remove("hidden")
+    itemAddedToCart.classList.add("hidden")
+    popUpCart.classList.add("hidden")
+    currentValueStack = 0
+})

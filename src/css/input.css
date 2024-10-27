@@ -5,3 +5,31 @@
 p{
     @apply text-base text-base
 }
+
+
+    html {
+        font-family: "Kumbh Sans", sans-serif;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* CSS pour les animations personnalisées */
+.slide-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .slide-out {
+    opacity: 0 !important;
+    transform: translateY(-20px) !important;
+  }
